@@ -50,7 +50,7 @@ router.patch(
     bulkUnblockUsers
 );
 
-router.delete(
+router.post(
     "/bulk-delete",
     authMiddleware,
     bulkDeleteUsers

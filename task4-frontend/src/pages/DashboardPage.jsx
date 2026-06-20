@@ -19,7 +19,7 @@ const DashboardPage = () => {
 
     const [currentUserId, setCurrentUserId] = useState("");
 
-    const [actionLoading, setActionLoading] = useState(false);
+    const [loadingAction, setLoadingAction] = useState("");
 
 
     const fetchUsers = async () => {
@@ -27,7 +27,7 @@ const DashboardPage = () => {
         try {
 
             const response = await axios.get(
-                "https://task-4-se4e.onrender.com/api/users",
+                "https://task-4-six-wine.vercel.app/api/users",
                 {
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -104,11 +104,11 @@ const DashboardPage = () => {
 
         try {
 
-            setActionLoading(true);
+            setLoadingAction("block");
             const token = localStorage.getItem("token");
 
             const response = await axios.patch(
-                "https://task-4-se4e.onrender.com/api/users/bulk-block",
+                "https://task-4-six-wine.vercel.app/api/users/bulk-block",
                 {
                     userIds: selectedUsers
                 },
@@ -142,18 +142,18 @@ const DashboardPage = () => {
 
         } finally {
 
-            setActionLoading(false);
+            setLoadingAction("");
         }
     };
 
     const handleBulkUnblock = async () => {
 
         try {
-            setActionLoading(true);
+            setLoadingAction("unblock");
             const token = localStorage.getItem("token");
 
             const response = await axios.patch(
-                "https://task-4-se4e.onrender.com/api/users/bulk-unblock",
+                "https://task-4-six-wine.vercel.app/api/users/bulk-unblock",
                 {
                     userIds: selectedUsers
                 },
@@ -177,7 +177,7 @@ const DashboardPage = () => {
             toast.error("Unblock failed");
         } finally {
 
-            setActionLoading(false);
+            setLoadingAction("");
         }
 
     };
@@ -193,17 +193,18 @@ const DashboardPage = () => {
 
         try {
 
-            setActionLoading(true);
+            setLoadingAction("delete");
+
             const token = localStorage.getItem("token");
 
-            const response = await axios.delete(
-                "https://task-4-se4e.onrender.com/api/users/bulk-delete",
+            const response = await axios.post(
+                "https://task-4-six-wine.vercel.app/api/users/bulk-delete",
+                {
+                    userIds: selectedUsers
+                },
                 {
                     headers: {
                         Authorization: `Bearer ${token}`
-                    },
-                    data: {
-                        userIds: selectedUsers
                     }
                 }
             );
@@ -230,7 +231,7 @@ const DashboardPage = () => {
             toast.error("Delete failed");
         } finally {
 
-            setActionLoading(false);
+            setLoadingAction("");
         }
 
     };
@@ -298,12 +299,12 @@ const DashboardPage = () => {
                     onClick={handleBulkBlock}
                     disabled={
                         selectedUsers.length === 0 ||
-                        actionLoading
+                        loadingAction === "block"
                     }
                     className="w-full sm:w-auto bg-black text-white px-4 py-2 rounded-lg disabled:opacity-50"
                 >
                     {
-                        actionLoading
+                        loadingAction === "block"
                             ? "Processing..."
                             : "Block"
                     }
@@ -313,12 +314,12 @@ const DashboardPage = () => {
                     onClick={handleBulkUnblock}
                     disabled={
                         selectedUsers.length === 0 ||
-                        actionLoading
+                        loadingAction === "unblock"
                     }
                     className="w-full sm:w-auto bg-green-600 text-white px-4 py-2 rounded-lg disabled:opacity-50"
                 >
                     {
-                        actionLoading
+                        loadingAction === "unblock"
                             ? "Processing..."
                             : "Unblock"
                     }
@@ -328,12 +329,12 @@ const DashboardPage = () => {
                     onClick={handleBulkDelete}
                     disabled={
                         selectedUsers.length === 0 ||
-                        actionLoading
+                        loadingAction === "delete"
                     }
                     className="w-full sm:w-auto bg-red-600 text-white px-4 py-2 rounded-lg disabled:opacity-50"
                 >
                     {
-                        actionLoading
+                        loadingAction === "delete"
                             ? "Processing..."
                             : "Delete"
                     }

@@ -8,7 +8,8 @@ const routes = require('./routes/index');
 app.use(cors({
     origin: [
         "https://task-4-six-wine.vercel.app",
-        "www.task-4-six-wine.vercel.app"
+        "www.task-4-six-wine.vercel.app",
+        "http://localhost:5173"
     ]
 }));
 

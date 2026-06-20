@@ -175,7 +175,9 @@ const bulkBlockUsers = async (req, res) => {
             }
         );
 
-        const shouldLogout = userIds.includes(req.user.userId);
+        const shouldLogout = userIds.some(
+            (id) => id.toString() === req.user.userId
+        );
 
         return apiResponse(res, {
             statusCode: 200,
@@ -234,7 +236,9 @@ const bulkDeleteUsers = async (req, res) => {
             _id: { $in: userIds }
         });
 
-        const shouldLogout = userIds.includes(req.user.userId);
+        const shouldLogout = userIds.some(
+            (id) => id.toString() === req.user.userId
+        );
 
         return apiResponse(res, {
             statusCode: 200,
