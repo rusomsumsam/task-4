@@ -36,7 +36,7 @@ const RegisterPage = () => {
             setLoading(true);
 
             const response = await axios.post(
-                "https://task-4-se4e.onrender.comapi/auth/register",
+                "https://task-4-se4e.onrender.com/api/auth/register",
                 formData
             );
 
