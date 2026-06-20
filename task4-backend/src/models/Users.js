@@ -47,4 +47,4 @@ const demoSchema = new mongoose.Schema({
 const User = mongoose.model("User", userSchema);
 const Demo = mongoose.model("Demo", demoSchema);
 
-module.exports = User;
+module.exports = {User, Demo};
