@@ -40,6 +40,11 @@ const userSchema = new mongoose.Schema({
 
 });
 
+const demoSchema = new mongoose.Schema({
+    name: String
+});
+
 const User = mongoose.model("User", userSchema);
+const Demo = mongoose.model("Demo", demoSchema);
 
 module.exports = User;
