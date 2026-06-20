@@ -27,7 +27,7 @@ const DashboardPage = () => {
         try {
 
             const response = await axios.get(
-                "http://localhost:3001/api/users",
+                "https://task-4-se4e.onrender.com/api/users",
                 {
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -108,7 +108,7 @@ const DashboardPage = () => {
             const token = localStorage.getItem("token");
 
             const response = await axios.patch(
-                "http://localhost:3001/api/users/bulk-block",
+                "https://task-4-se4e.onrender.com/api/users/bulk-block",
                 {
                     userIds: selectedUsers
                 },
@@ -145,7 +145,7 @@ const DashboardPage = () => {
             setActionLoading(false);
         }
     };
-    
+
     const handleBulkUnblock = async () => {
 
         try {
@@ -153,7 +153,7 @@ const DashboardPage = () => {
             const token = localStorage.getItem("token");
 
             const response = await axios.patch(
-                "http://localhost:3001/api/users/bulk-unblock",
+                "https://task-4-se4e.onrender.com/api/users/bulk-unblock",
                 {
                     userIds: selectedUsers
                 },
@@ -197,7 +197,7 @@ const DashboardPage = () => {
             const token = localStorage.getItem("token");
 
             const response = await axios.delete(
-                "http://localhost:3001/api/users/bulk-delete",
+                "https://task-4-se4e.onrender.com/api/users/bulk-delete",
                 {
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -353,13 +353,13 @@ const DashboardPage = () => {
 
                     <div className="overflow-x-auto bg-white rounded-xl shadow-lg">
 
-                            <table className="min-w-full border-collapse text-sm md:text-base">
+                        <table className="min-w-full border-collapse text-sm md:text-base">
 
                             <thead className="bg-black text-white">
 
                                 <tr>
 
-                                        <th className="p-2 md:p-4">
+                                    <th className="p-2 md:p-4">
 
                                         <input
                                             type="checkbox"
@@ -393,107 +393,107 @@ const DashboardPage = () => {
 
                             </thead>
 
-                                <tbody>
+                            <tbody>
 
-                                    {
-                                        users.length === 0 ? (
+                                {
+                                    users.length === 0 ? (
 
-                                            <tr>
+                                        <tr>
 
-                                                <td
-                                                    colSpan="5"
-                                                    className="text-center p-6"
-                                                >
-                                                    No users found
+                                            <td
+                                                colSpan="5"
+                                                className="text-center p-6"
+                                            >
+                                                No users found
+                                            </td>
+
+                                        </tr>
+
+                                    ) : (
+
+                                        users.map((user) => (
+
+                                            <tr
+                                                key={user._id}
+                                                className={
+                                                    user._id === currentUserId
+                                                        ? "border-b bg-blue-50 hover:bg-blue-100 transition"
+                                                        : "border-b hover:bg-gray-50 transition"
+                                                }
+                                            >
+
+                                                <td className="p-2 md:p-4">
+
+                                                    <input
+                                                        type="checkbox"
+                                                        className="w-4 h-4 cursor-pointer"
+                                                        checked={
+                                                            selectedUsers.includes(user._id)
+                                                        }
+                                                        onChange={() =>
+                                                            handleSelectUser(user._id)
+                                                        }
+                                                    />
+
+                                                </td>
+
+                                                <td className="p-2 md:p-4">
+
+                                                    <div className="flex items-center gap-2 flex-wrap">
+
+                                                        <span>
+                                                            {user.name}
+                                                        </span>
+
+                                                        {
+                                                            user._id === currentUserId && (
+
+                                                                <span className="bg-blue-500 text-white text-xs px-2 py-1 rounded-full">
+                                                                    You
+                                                                </span>
+                                                            )
+                                                        }
+
+                                                    </div>
+
+                                                </td>
+
+
+                                                <td className="hidden md:table-cell p-2 md:p-4">
+                                                    {user.email}
+                                                </td>
+
+                                                <td className="p-2 md:p-4 text-center">
+
+
+                                                    <span
+
+                                                        className={
+                                                            user.status === "blocked"
+                                                                ? "bg-red-100 text-red-600 px-2 md:px-3 py-1 rounded-full text-xs md:text-sm"
+                                                                : "bg-green-100 text-green-600 px-2 md:px-3 py-1 rounded-full text-xs md:text-sm"
+                                                        }
+
+                                                    >
+                                                        {user.status}
+                                                    </span>
+
+                                                </td>
+
+                                                <td className="hidden lg:table-cell p-2 md:p-4">
+                                                    {
+                                                        new Date(
+                                                            user.lastLogin
+                                                        ).toLocaleString("en-BD")
+                                                    }
                                                 </td>
 
                                             </tr>
+                                        ))
+                                    )
+                                }
 
-                                        ) : (
-
-                                            users.map((user) => (
-
-                                                <tr
-                                                    key={user._id}
-                                                    className={
-                                                        user._id === currentUserId
-                                                            ? "border-b bg-blue-50 hover:bg-blue-100 transition"
-                                                            : "border-b hover:bg-gray-50 transition"
-                                                    }
-                                                >
-
-                                                    <td className="p-2 md:p-4">
-
-                                                        <input
-                                                            type="checkbox"
-                                                            className="w-4 h-4 cursor-pointer"
-                                                            checked={
-                                                                selectedUsers.includes(user._id)
-                                                            }
-                                                            onChange={() =>
-                                                                handleSelectUser(user._id)
-                                                            }
-                                                        />
-
-                                                    </td>
-
-                                                    <td className="p-2 md:p-4">
-
-                                                        <div className="flex items-center gap-2 flex-wrap">
-
-                                                            <span>
-                                                                {user.name}
-                                                            </span>
-
-                                                            {
-                                                                user._id === currentUserId && (
-
-                                                                    <span className="bg-blue-500 text-white text-xs px-2 py-1 rounded-full">
-                                                                        You
-                                                                    </span>
-                                                                )
-                                                            }
-
-                                                        </div>
-
-                                                    </td>
-
-
-                                                    <td className="hidden md:table-cell p-2 md:p-4">
-                                                        {user.email}
-                                                    </td>
-
-                                                    <td className="p-2 md:p-4 text-center">
-
-
-                                                        <span
-
-                                                            className={
-                                                                user.status === "blocked"
-                                                                    ? "bg-red-100 text-red-600 px-2 md:px-3 py-1 rounded-full text-xs md:text-sm"
-                                                                    : "bg-green-100 text-green-600 px-2 md:px-3 py-1 rounded-full text-xs md:text-sm"
-                                                            }
-
-                                                        >
-                                                            {user.status}
-                                                        </span>
-
-                                                    </td>
-
-                                                    <td className="hidden lg:table-cell p-2 md:p-4">
-                                                        {
-                                                            new Date(
-                                                                user.lastLogin
-                                                            ).toLocaleString("en-BD")
-                                                        }
-                                                    </td>
-
-                                                </tr>
-                                            ))
-                                        )
-                                    }
-
-                                </tbody>
+                            </tbody>
 
                         </table>
 
