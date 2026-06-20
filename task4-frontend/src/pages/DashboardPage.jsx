@@ -27,7 +27,7 @@ const DashboardPage = () => {
         try {
 
             const response = await axios.get(
-                "https://task-4-5hk7.vercel.app/api/users",
+                "https://task-4-se4e.onrender.com/api/users",
                 {
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -108,7 +108,7 @@ const DashboardPage = () => {
             const token = localStorage.getItem("token");
 
             const response = await axios.patch(
-                "https://task-4-5hk7.vercel.app/api/users/bulk-block",
+                "https://task-4-se4e.onrender.com/api/users/bulk-block",
                 {
                     userIds: selectedUsers
                 },
@@ -153,7 +153,7 @@ const DashboardPage = () => {
             const token = localStorage.getItem("token");
 
             const response = await axios.patch(
-                "https://task-4-5hk7.vercel.app/api/users/bulk-unblock",
+                "https://task-4-se4e.onrender.com/api/users/bulk-unblock",
                 {
                     userIds: selectedUsers
                 },
@@ -197,7 +197,7 @@ const DashboardPage = () => {
             const token = localStorage.getItem("token");
 
             const response = await axios.delete(
-                "https://task-4-5hk7.vercel.app/api/users/bulk-delete",
+                "https://task-4-se4e.onrender.com/api/users/bulk-delete",
                 {
                     headers: {
                         Authorization: `Bearer ${token}`
