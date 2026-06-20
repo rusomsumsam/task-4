@@ -2,18 +2,6 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { Navigate, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-import {
-    Lock,
-    LockOpen,
-    Trash2,
-    Filter,
-    ChevronDown,
-    User,
-    Mail,
-    Clock,
-    ShieldCheck,
-    ShieldAlert
-} from "lucide-react";
 
 const DashboardPage = () => {
     const navigate = useNavigate();
@@ -160,175 +148,142 @@ const DashboardPage = () => {
         }
     }, []);
 
-    if (!token) return <Navigate to="/login" />;
+    if (!token) {
+        return <Navigate to="/login" />;
+    }
 
     return (
-        <div className="min-h-screen bg-[#f8fafc] p-6 md:p-10 font-sans">
-            <div className="max-w-7xl mx-auto">
-                <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
-                    <div>
-                        <h1 className="text-3xl font-bold text-slate-800 tracking-tight">Dashboard</h1>
-                        <p className="text-sm text-slate-500 mt-1">Manage users and permissions</p>
-                    </div>
-                    <button
-                        onClick={handleLogout}
-                        className="w-full sm:w-auto bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 px-5 py-2.5 rounded-xl text-sm font-medium transition shadow-sm flex items-center justify-center gap-2"
-                    >
-                        <span>Logout</span>
-                    </button>
+        <div className="min-h-screen bg-white p-6 md:p-10 font-sans">
+            {/* Header & Logout */}
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
+                <div>
+                    <h1 className="text-3xl font-bold text-gray-800 tracking-tight">Dashboard</h1>
+                    <p className="text-sm text-gray-500 mt-1">
+                        {selectedUsers.length} user{selectedUsers.length !== 1 ? "s" : ""} selected
+                    </p>
                 </div>
+                <button
+                    onClick={handleLogout}
+                    className="bg-gray-100 hover:bg-gray-200 text-gray-700 px-5 py-2.5 rounded-lg text-sm font-medium transition-colors border border-gray-200"
+                >
+                    Logout
+                </button>
+            </div>
 
-                <div className="flex flex-wrap items-center gap-3 mb-6 bg-white p-4 rounded-2xl shadow-sm border border-slate-200">
-                    <div className="flex items-center gap-2 mr-2">
-                        <span className="text-sm font-medium text-slate-600">Selected:</span>
-                        <span className="bg-blue-50 text-blue-700 px-3 py-1 rounded-full text-xs font-bold">{selectedUsers.length}</span>
-                    </div>
-
-                    <div className="w-px h-6 bg-slate-200 mx-1 hidden sm:block"></div>
-
-                    <button
-                        onClick={handleBulkBlock}
-                        disabled={selectedUsers.length === 0 || loadingAction === "block"}
-                        className="flex items-center gap-2 w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-xl text-sm font-medium transition disabled:opacity-50 disabled:cursor-not-allowed shadow-sm"
-                    >
-                        <Lock size={16} />
-                        {loadingAction === "block" ? "Processing..." : "Block"}
-                    </button>
-
-                    <button
-                        onClick={handleBulkUnblock}
-                        disabled={selectedUsers.length === 0 || loadingAction === "unblock"}
-                        className="flex items-center gap-2 w-full sm:w-auto bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2.5 rounded-xl text-sm font-medium transition disabled:opacity-50 disabled:cursor-not-allowed shadow-sm"
-                    >
-                        <LockOpen size={16} />
-                        {loadingAction === "unblock" ? "Processing..." : "Unblock"}
-                    </button>
-
-                    <button
-                        onClick={handleBulkDelete}
-                        disabled={selectedUsers.length === 0 || loadingAction === "delete"}
-                        className="flex items-center gap-2 w-full sm:w-auto bg-rose-600 hover:bg-rose-700 text-white px-5 py-2.5 rounded-xl text-sm font-medium transition disabled:opacity-50 disabled:cursor-not-allowed shadow-sm"
-                    >
-                        <Trash2 size={16} />
-                        {loadingAction === "delete" ? "Processing..." : "Delete"}
-                    </button>
-
-                    <div className="ml-auto flex items-center gap-2 w-full sm:w-auto">
-                        <div className="relative w-full sm:w-56">
-                            <input
-                                type="text"
-                                placeholder="Filter users..."
-                                className="w-full pl-9 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition"
-                            />
-                            <Filter size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
-                        </div>
+            {/* Action Toolbar */}
+            <div className="flex flex-wrap items-center gap-3 mb-8 bg-white p-2 rounded-xl border border-gray-200 shadow-sm">
+                <button
+                    onClick={handleBulkBlock}
+                    disabled={selectedUsers.length === 0 || loadingAction === "block"}
+                    className="flex items-center gap-2 bg-[#4F46E5] hover:bg-[#4338CA] text-white px-4 py-2 rounded-lg text-sm font-medium transition disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" /></svg>
+                    {loadingAction === "block" ? "Processing..." : "Block"}
+                </button>
+                <button
+                    onClick={handleBulkUnblock}
+                    disabled={selectedUsers.length === 0 || loadingAction === "unblock"}
+                    className="flex items-center gap-2 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium transition disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 11V7a4 4 0 018 0v4M6 21h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z" /></svg>
+                    {loadingAction === "unblock" ? "Processing..." : "Unblock"}
+                </button>
+                <button
+                    onClick={handleBulkDelete}
+                    disabled={selectedUsers.length === 0 || loadingAction === "delete"}
+                    className="flex items-center gap-2 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium transition disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                    {loadingAction === "delete" ? "Processing..." : "Delete"}
+                </button>
+                <div className="ml-auto hidden md:block">
+                    <div className="relative">
+                        <input
+                            type="text"
+                            placeholder="Filter"
+                            className="pl-3 pr-4 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-gray-50 w-48"
+                        />
                     </div>
                 </div>
+            </div>
 
-                {loading ? (
-                    <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-12 text-center">
-                        <div className="inline-block animate-spin rounded-full h-8 w-8 border-4 border-slate-200 border-t-blue-600 mb-4"></div>
-                        <p className="text-slate-500 font-medium">Loading users...</p>
-                    </div>
-                ) : (
-                    <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
-                        <div className="overflow-x-auto">
-                            <table className="w-full text-sm text-left">
-                                <thead className="bg-slate-50 border-b border-slate-200 text-slate-500 font-semibold uppercase tracking-wider text-xs">
-                                    <tr>
-                                        <th className="p-4 w-12">
+            {/* Table */}
+            {loading ? (
+                <div className="text-center py-20 text-gray-500 text-lg font-medium">Loading...</div>
+            ) : (
+                <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+                    <table className="min-w-full text-sm text-left">
+                        <thead className="bg-white border-b border-gray-200">
+                            <tr>
+                                <th className="p-4 w-12">
+                                    <input
+                                        type="checkbox"
+                                        className="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
+                                        checked={users.length > 0 && selectedUsers.length === users.length}
+                                        onChange={handleSelectAll}
+                                    />
+                                </th>
+                                <th className="p-4 text-gray-600 font-medium">Name</th>
+                                <th className="p-4 text-gray-600 font-medium">Email</th>
+                                <th className="p-4 text-gray-600 font-medium">Status</th>
+                                <th className="p-4 text-gray-600 font-medium">Last seen</th>
+                            </tr>
+                        </thead>
+                        <tbody className="divide-y divide-gray-100">
+                            {users.length === 0 ? (
+                                <tr>
+                                    <td colSpan="5" className="text-center py-12 text-gray-500">
+                                        No users found
+                                    </td>
+                                </tr>
+                            ) : (
+                                users.map((user) => (
+                                    <tr
+                                        key={user._id}
+                                        className={`hover:bg-gray-50 transition-colors ${user._id === currentUserId ? "bg-blue-50/50" : ""
+                                            }`}
+                                    >
+                                        <td className="p-4">
                                             <input
                                                 type="checkbox"
-                                                className="w-4 h-4 cursor-pointer rounded border-slate-300 text-blue-600 focus:ring-blue-500"
-                                                checked={users.length > 0 && selectedUsers.length === users.length}
-                                                onChange={handleSelectAll}
+                                                className="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
+                                                checked={selectedUsers.includes(user._id)}
+                                                onChange={() => handleSelectUser(user._id)}
                                             />
-                                        </th>
-                                        <th className="p-4 min-w-[200px]">
-                                            <div className="flex items-center gap-1 cursor-pointer hover:text-slate-700">
-                                                <User size={14} />
-                                                Name
-                                                <ChevronDown size={14} className="opacity-50" />
-                                            </div>
-                                        </th>
-                                        <th className="p-4 min-w-[200px]">
-                                            <div className="flex items-center gap-1 cursor-pointer hover:text-slate-700">
-                                                <Mail size={14} />
-                                                Email
-                                            </div>
-                                        </th>
-                                        <th className="p-4 min-w-[120px]">
-                                            <div className="flex items-center gap-1 cursor-pointer hover:text-slate-700">
-                                                Status
-                                            </div>
-                                        </th>
-                                        <th className="p-4 min-w-[160px] hidden lg:table-cell">
-                                            <div className="flex items-center gap-1 cursor-pointer hover:text-slate-700">
-                                                <Clock size={14} />
-                                                Last Login
-                                            </div>
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody className="divide-y divide-slate-100">
-                                    {users.length === 0 ? (
-                                        <tr>
-                                            <td colSpan="5" className="text-center p-12 text-slate-400">
-                                                <div className="flex flex-col items-center gap-2">
-                                                    <User size={40} className="opacity-20" />
-                                                    <p>No users found</p>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    ) : (
-                                        users.map((user) => (
-                                            <tr
-                                                key={user._id}
-                                                className={`transition hover:bg-slate-50/80 ${user._id === currentUserId ? "bg-blue-50/60" : ""}`}
-                                            >
-                                                <td className="p-4">
-                                                    <input
-                                                        type="checkbox"
-                                                        className="w-4 h-4 cursor-pointer rounded border-slate-300 text-blue-600 focus:ring-blue-500"
-                                                        checked={selectedUsers.includes(user._id)}
-                                                        onChange={() => handleSelectUser(user._id)}
-                                                    />
-                                                </td>
-                                                <td className="p-4">
-                                                    <div className="flex items-center gap-3">
-                                                        <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 text-white flex items-center justify-center text-xs font-bold shrink-0">
-                                                            {user.name.charAt(0).toUpperCase()}
-                                                        </div>
-                                                        <div className="flex flex-col">
-                                                            <span className="font-medium text-slate-800">{user.name}</span>
-                                                            <span className="text-xs text-slate-400">{user._id === currentUserId ? "You" : user.role || "User"}</span>
-                                                        </div>
-                                                        {user._id === currentUserId && (
-                                                            <span className="bg-blue-100 text-blue-700 text-[10px] font-bold px-2 py-0.5 rounded-full border border-blue-200 ml-auto">
-                                                                YOU
-                                                            </span>
-                                                        )}
-                                                    </div>
-                                                </td>
-                                                <td className="p-4 text-slate-600">{user.email}</td>
-                                                <td className="p-4">
-                                                    <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold ${user.status === "blocked" ? "bg-red-50 text-red-700 ring-1 ring-red-200" : "bg-emerald-50 text-emerald-700 ring-1 ring-emerald-200"}`}>
-                                                        {user.status === "blocked" ? <ShieldAlert size={12} /> : <ShieldCheck size={12} />}
-                                                        {user.status}
+                                        </td>
+                                        <td className="p-4">
+                                            <div className="flex items-center gap-2">
+                                                <span className="font-medium text-gray-900">{user.name}</span>
+                                                {user._id === currentUserId && (
+                                                    <span className="bg-blue-100 text-blue-700 text-[10px] px-2 py-0.5 rounded-full font-medium">
+                                                        You
                                                     </span>
-                                                </td>
-                                                <td className="p-4 text-slate-500 hidden lg:table-cell">
-                                                    {formatLastSeen(user.lastLogin)}
-                                                </td>
-                                            </tr>
-                                        ))
-                                    )}
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                )}
-            </div>
+                                                )}
+                                            </div>
+                                        </td>
+                                        <td className="p-4 text-gray-600">{user.email}</td>
+                                        <td className="p-4">
+                                            <span
+                                                className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${user.status === "blocked"
+                                                        ? "bg-red-100 text-red-700"
+                                                        : user.status === "unverified"
+                                                            ? "bg-gray-100 text-gray-600"
+                                                            : "bg-green-100 text-green-700"
+                                                    }`}
+                                            >
+                                                {user.status}
+                                            </span>
+                                        </td>
+                                        <td className="p-4 text-gray-500 text-sm">
+                                            {formatLastSeen(user.lastLogin)}
+                                        </td>
+                                    </tr>
+                                ))
+                            )}
+                        </tbody>
+                    </table>
+                </div>
+            )}
         </div>
     );
 };
