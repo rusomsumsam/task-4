@@ -4,7 +4,7 @@ const router = express.Router();
 
 const authMiddleware = require('../middlewares/auth.middleware');
 
-const {User, Demo} = require('../models/Users');
+const User = require('../models/Users');
 
 // Protected Route
 router.get(
@@ -24,15 +24,7 @@ router.get(
     }
 );
 
-router.get(
-    '/demo',
-    async (req, res) => {
-        const demo = await Demo.find();
-        res.json({
-            demo
-        })
-    }
-);
+
 
 const authRoute = require('./auth.routes');
 const userRoutes = require('./user.routes');
