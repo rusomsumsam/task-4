@@ -6,7 +6,10 @@ const app = express();
 const routes = require('./routes/index');
 
 app.use(cors({
-    origin: "*"
+    origin: [
+        "https://task-4-six-wine.vercel.app",
+        "www.task-4-six-wine.vercel.app"
+    ]
 }));
 
 app.use(express.json());
