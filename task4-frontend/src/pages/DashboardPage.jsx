@@ -38,7 +38,9 @@ const DashboardPage = () => {
             setCurrentUserId(payload.userId);
         } catch (error) {
             console.log(error);
-            toast.error("Unauthorized");
+            toast.error(
+                "Your session expired or your account was blocked. Please login again."
+            );
             localStorage.removeItem("token");
             navigate("/login");
         } finally {
@@ -74,6 +76,10 @@ const DashboardPage = () => {
             );
             toast.success(response.data.message);
             if (response.data.data.logout) {
+                toast.error(
+                    "Your account has been blocked."
+                );
+
                 localStorage.removeItem("token");
                 navigate("/login");
                 return;
@@ -82,7 +88,10 @@ const DashboardPage = () => {
             setSelectedUsers([]);
         } catch (error) {
             console.log(error);
-            toast.error("Block failed");
+            toast.error(
+                error.response?.data?.message ||
+                "Unable to block selected users. Please try again."
+            );
         } finally {
             setLoadingAction("");
         }
@@ -102,7 +111,10 @@ const DashboardPage = () => {
             setSelectedUsers([]);
         } catch (error) {
             console.log(error);
-            toast.error("Unblock failed");
+            toast.error(
+                error.response?.data?.message ||
+                "Unable to unblock selected users. Please refresh and try again."
+            );
         } finally {
             setLoadingAction("");
         }
@@ -119,8 +131,12 @@ const DashboardPage = () => {
                 { userIds: selectedUsers },
                 { headers: { Authorization: `Bearer ${token}` } }
             );
-            toast.error(response.data.message);
+            toast.success(response.data.message);
             if (response.data.data.logout) {
+                toast.error(
+                    "Your account has been deleted."
+                );
+
                 localStorage.removeItem("token");
                 navigate("/login");
                 return;
@@ -129,7 +145,10 @@ const DashboardPage = () => {
             setSelectedUsers([]);
         } catch (error) {
             console.log(error);
-            toast.error("Delete failed");
+            toast.error(
+                error.response?.data?.message ||
+                "Unable to delete selected users. Please try again."
+            );
         } finally {
             setLoadingAction("");
         }
